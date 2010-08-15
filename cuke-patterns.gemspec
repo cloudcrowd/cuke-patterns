@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
      "README.markdown",
      "Rakefile",
      "VERSION",
+     "cuke-patterns.gemspec",
      "features/no_regressions_in_normal_cukes.feature",
      "features/simple_cuke_patterns.feature",
      "features/step_definitions/no_regression_steps.rb",
@@ -38,13 +39,13 @@ Gem::Specification.new do |s|
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
     s.specification_version = 3
 
-#    if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
-#      s.add_development_dependency(%q<thoughtbot-shoulda>, [">= 0"])
-#    else
-#      s.add_dependency(%q<thoughtbot-shoulda>, [">= 0"])
-#    end
-#  else
-#    s.add_dependency(%q<thoughtbot-shoulda>, [">= 0"])
-#  end
+    if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
+      s.add_development_dependency(%q<thoughtbot-shoulda>, [">= 0"])
+    else
+      s.add_dependency(%q<thoughtbot-shoulda>, [">= 0"])
+    end
+  else
+    s.add_dependency(%q<thoughtbot-shoulda>, [">= 0"])
+  end
 end
 
