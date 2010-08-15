@@ -2,8 +2,8 @@
 
 Makes cucumber step definitions more focused, understandable, searchable and awesomeable.
 
-Author: Brendan Baldwin <brendan@usergenic.com>
-Github: http://github.com/brendan/cuke-patterns
+ * Author: Brendan Baldwin <brendan@usergenic.com>
+ * Github: http://github.com/brendan/cuke-patterns
 
 ## What does it do?
 
