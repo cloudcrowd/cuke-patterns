@@ -14,9 +14,6 @@ Then /^@x should evaluate to (.*)$/ do |expression|
   @x.should == eval(expression)
 end
 
-Pattern 'a',  /a|an/
-Pattern 'an', /a|an/
-
 Pattern :class, /([A-Z][a-z]+)/ do |class_name|
   Object.const_get(class_name)
 end
@@ -28,3 +25,15 @@ end
 Pattern :list_of_integers, /(-?\d+(?: *(?:,|and) *-?\d+)*)/ do |list|
   list.split(/ *(?:,|and) */).map{|number| number.to_i}
 end
+
+PatternGenerator do |key|
+  %w[a an].include?(key) and /a|an/
+end
+
+## This PatternGenerator would enable automatic singularize/pluralize of ALL words
+## so you don't have to resort to regexp construction for steps just do deal with
+## pluralization related nonsense.
+#
+# PatternGenerator do |key|
+#   Regexp.new([Regexp.escape(key.singularize), Regexp.escape(key.pluralize)].join('|'))
+# end

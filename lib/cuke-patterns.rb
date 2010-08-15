@@ -6,6 +6,10 @@ module CukePatterns
       @rb_language.register_rb_cuke_pattern(name, regexp, &proc)
     end
 
+    def register_rb_cuke_pattern_generator(&proc)
+      @rb_language.register_rb_cuke_pattern_generator(&proc)
+    end
+
   end
 
   # For extending the Cucumber::RbSupport::RbLanguage class
@@ -33,7 +37,21 @@ module CukePatterns
     end
 
     def cuke_patterns
-      @cuke_patterns ||= {}
+      @cuke_patterns ||= Hash.new {|hash, key| default_cuke_pattern(key)}
+    end
+
+    # Hook this method to automatically generate regexp matches for words in step
+    # definition strings that *don't* match to registered patterns.
+    def default_cuke_pattern(key)
+      default_cuke_pattern_generators.each do |generator|
+        regexp, proc = generator[key]
+        return [regexp, proc] if regexp
+      end
+      return nil
+    end
+
+    def default_cuke_pattern_generators
+      @default_cuke_pattern_generators ||= []
     end
 
     def register_rb_cuke_pattern(name, regexp, &conversion_proc)
@@ -49,6 +67,10 @@ module CukePatterns
       end
 
       return cuke_patterns[name] = [regexp, conversion_proc]
+    end
+
+    def register_rb_cuke_pattern_generator(&proc)
+      default_cuke_pattern_generators << proc
     end
 
     def register_rb_step_definition_with_cuke_patterns(matcher, proc)
@@ -73,12 +95,12 @@ module CukePatterns
       # Split the string by non-alphanumeric, underscore or leading-colon characters
       matcher.scan(/(:?\w+)|([^:\w]+|:)/) do |candidate, non_candidate|
 
-        if non_candidate or not cuke_patterns.include?(candidate)
+        regexp, conversion_proc = cuke_patterns[candidate] if candidate
+
+        if non_candidate or not regexp
           matcher_regexp << Regexp.escape(candidate || non_candidate)
           next
         end
-
-        regexp, conversion_proc = cuke_patterns[candidate]
 
         pattern_capture_count = capture_count_for(regexp)
 
@@ -89,7 +111,7 @@ module CukePatterns
         pattern_counter += 1 unless pattern_capture_count == 0
         capture_counter += pattern_capture_count
 
-        matcher_regexp << regexp.to_s
+        matcher_regexp << "(?:#{regexp})"
 
       end
 
@@ -162,6 +184,11 @@ Cucumber::RbSupport::RbDsl.module_eval do
   def Pattern(name, regexp, &proc)
     Cucumber::RbSupport::RbDsl.register_rb_cuke_pattern(name, regexp, &proc)
   end
+
+  def PatternGenerator(&proc)
+    Cucumber::RbSupport::RbDsl.register_rb_cuke_pattern_generator(&proc)
+  end
+
 end
 
 Cucumber::RbSupport::RbLanguage.class_eval do
