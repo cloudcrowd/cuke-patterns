@@ -7,6 +7,8 @@ Makes cucumber step definitions more focused, understandable, searchable and awe
 
 ## What does it do?
 
+(This gem is only relevant if you're using cucumber already.)
+
 Change your step definition files from this:
 
     When /^(\w+) withdraws \$(\d+\(?:\.\d+)?)$/ do |name, amount|
