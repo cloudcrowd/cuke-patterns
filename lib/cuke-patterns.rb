@@ -24,7 +24,6 @@ module CukePatterns
       count = 0
       cuke_pattern_delayed_step_definition_registrations.each do |matcher, proc|
         regexp, converted_proc = convert_cuke_patterns_and_proc(matcher, proc)
-        puts regexp.to_s + " -> " + converted_proc.inspect
         register_rb_step_definition(regexp, converted_proc)
         count += 1
       end

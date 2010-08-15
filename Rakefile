@@ -1,16 +1,22 @@
 require 'rubygems'
 require 'rake'
+require 'cucumber'
+require 'cucumber/rake/task'
+
+Cucumber::Rake::Task.new(:features) do |t|
+  t.cucumber_opts = "features --format pretty"
+end
 
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "cuke-patterns"
-    gem.summary = %Q{TODO: one-line summary of your gem}
-    gem.description = %Q{TODO: longer description of your gem}
+    gem.summary = %Q{Makes cucumber step definitions more focused, understandable, searchable and awesomeable.}
+    gem.description = %Q{Makes cucumber step definitions more focused, understandable, searchable and awesomeable.}
     gem.email = "brendan@usergenic.com"
     gem.homepage = "http://github.com/brendan/cuke-patterns"
     gem.authors = ["Brendan Baldwin"]
-    gem.add_development_dependency "thoughtbot-shoulda", ">= 0"
+    # gem.add_development_dependency "thoughtbot-shoulda", ">= 0"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new
