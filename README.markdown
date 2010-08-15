@@ -1,4 +1,11 @@
-Welcome to the 'cuke-patterns' gem
+# cuke-patterns
+
+Makes cucumber step definitions more focused, understandable, searchable and awesomeable.
+
+Author: Brendan Baldwin <brendan@usergenic.com>
+Github: http://github.com/brendan/cuke-patterns
+
+## What does it do?
 
 Change your step definition files from this:
 
@@ -24,3 +31,8 @@ Into this:
 
 Patterns are kind of like Transforms in cucumber, except Patterns are designed to be
 referenced in Step definitions by name as opposed to recognized by form automatically.
+
+To use it, just pop this in your app's support/env.rb which gets loaded by cucumber:
+
+    require 'rubygems'
+    require 'cuke-patterns'
