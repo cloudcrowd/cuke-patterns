@@ -42,6 +42,15 @@ module CukePatterns
       @default_cuke_pattern_generators ||= []
     end
 
+    def apply_rb_cuke_pattern(name, string)
+      name = ":#{name}" if name.is_a?(String)
+      regexp, proc = cuke_patterns[name]
+      match = regexp.match(string)
+      raise "Pattern #{regexp.to_s} does not match #{string.inspect}" unless match
+      return instance_exec(*match.captures, &proc) if proc
+      return match.to_s
+    end
+
     def register_rb_cuke_pattern(name, regexp, &conversion_proc)
       name = ":#{name}" if name.is_a?(Symbol) # so :user becomes ':user'
 

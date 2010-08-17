@@ -1,6 +1,10 @@
 module CukePatterns
   module RbDslExt
 
+    def apply_rb_cuke_pattern(name, string)
+      @rb_language.apply_rb_cuke_pattern(name, string)
+    end
+
     def register_rb_cuke_pattern(name, regexp, &proc)
       @rb_language.register_rb_cuke_pattern(name, regexp, &proc)
     end
@@ -14,6 +18,10 @@ end
 
 Cucumber::RbSupport::RbDsl.module_eval do
   extend CukePatterns::RbDslExt
+
+  def apply_pattern(name, string)
+    Cucumber::RbSupport::RbDsl.apply_rb_cuke_pattern(name, string)
+  end
 
   def Pattern(name, regexp, &proc)
     Cucumber::RbSupport::RbDsl.register_rb_cuke_pattern(name, regexp, &proc)
