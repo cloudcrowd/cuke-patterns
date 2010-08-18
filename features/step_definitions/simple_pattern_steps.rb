@@ -26,5 +26,6 @@ end
 Pattern :ivar_name, /(@\w+)/
 
 Pattern :value, /(.*)/ do |expression|
+  assert_pony!
   eval(expression)
 end

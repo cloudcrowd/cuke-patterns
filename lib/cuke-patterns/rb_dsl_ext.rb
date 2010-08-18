@@ -1,8 +1,8 @@
 module CukePatterns
   module RbDslExt
 
-    def apply_rb_cuke_pattern(name, string)
-      @rb_language.apply_rb_cuke_pattern(name, string)
+    def apply_rb_cuke_pattern(name, string, world)
+      @rb_language.apply_rb_cuke_pattern(name, string, world)
     end
 
     def register_rb_cuke_pattern(*args, &proc)

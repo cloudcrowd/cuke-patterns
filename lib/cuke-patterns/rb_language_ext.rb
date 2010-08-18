@@ -42,12 +42,12 @@ module CukePatterns
       @default_cuke_pattern_generators ||= []
     end
 
-    def apply_rb_cuke_pattern(name, string)
+    def apply_rb_cuke_pattern(name, string, world)
       name = ":#{name}" if name.is_a?(Symbol)
       regexp, proc = lookup_cuke_pattern(name)
       match = regexp.match(string)
       raise "Pattern #{regexp.to_s} does not match #{string.inspect}" unless match
-      return instance_exec(*match.captures, &proc) if proc
+      return world.instance_exec(*match.captures, &proc) if proc
       return match.to_s
     end
 
