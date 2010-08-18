@@ -25,7 +25,7 @@ module CukePatterns
     end
 
     def cuke_patterns
-      @cuke_patterns ||= Hash.new {|hash, key| default_cuke_pattern(key)}
+      @cuke_patterns ||= {}
     end
 
     # Hook this method to automatically generate regexp matches for words in step
@@ -33,7 +33,7 @@ module CukePatterns
     def default_cuke_pattern(key)
       default_cuke_pattern_generators.each do |generator|
         regexp, proc = generator[key]
-        return [regexp, proc] if regexp
+        return regexp, proc if regexp
       end
       return nil
     end
@@ -43,16 +43,44 @@ module CukePatterns
     end
 
     def apply_rb_cuke_pattern(name, string)
-      name = ":#{name}" if name.is_a?(String)
-      regexp, proc = cuke_patterns[name]
+      name = ":#{name}" if name.is_a?(Symbol)
+      regexp, proc = lookup_cuke_pattern(name)
       match = regexp.match(string)
       raise "Pattern #{regexp.to_s} does not match #{string.inspect}" unless match
       return instance_exec(*match.captures, &proc) if proc
       return match.to_s
     end
 
-    def register_rb_cuke_pattern(name, regexp, &conversion_proc)
-      name = ":#{name}" if name.is_a?(Symbol) # so :user becomes ':user'
+    def lookup_cuke_pattern(name)
+      keys, regexp, proc = [], nil, nil
+      cuke_patterns.each do |key, value|
+        if key === name
+          keys << key
+          regexp, proc = value
+        end
+      end
+      return default_cuke_pattern(name) if keys.empty?
+      return regexp, proc if keys.length == 1
+      raise "Ambiguous Pattern for #{name.inspect}: #{keys.inspect}"
+    end
+
+    def register_rb_cuke_pattern(*args, &conversion_proc)
+      if args.length == 1
+        if args.first.is_a?(Hash)
+          args.first.each do |key, value|
+            register_rb_cuke_pattern(key, value, &conversion_proc)
+          end
+          return
+        else
+          # We wrap the key form of the regexp in begin/end
+          # so that we match only whole tokens when doing lookup
+          name = Regexp.new("^(?:#{args.first})$")
+          regexp = args.first
+        end
+      elsif args.length == 2
+        name, regexp = args
+        name = ":#{name}" if name.is_a?(Symbol) # so :user becomes ':user'
+      end
 
       if conversion_proc
         # Count the capturing '(' characters to get the pattern arity
@@ -92,7 +120,7 @@ module CukePatterns
       # Split the string by non-alphanumeric, underscore or leading-colon characters
       matcher.scan(/(:?\w+)|([^:\w]+|:)/) do |candidate, non_candidate|
 
-        regexp, conversion_proc = cuke_patterns[candidate] if candidate
+        regexp, conversion_proc = lookup_cuke_pattern(candidate) if candidate
 
         if non_candidate or not regexp
           matcher_regexp << Regexp.escape(candidate || non_candidate)

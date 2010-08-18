@@ -1,39 +1,30 @@
-When "@x is :integer" do |integer|
-  @x = integer
+When "I assign :ivar_name to :value" do |ivar, value|
+  instance_variable_set(ivar, value)
 end
 
-When "@x contains :list_of_integers" do |list|
-  @x = list
+Then ":ivar should be equal to :value" do |ivar, value|
+  ivar.should == value
 end
 
-Then "@x should be a :class" do |klass|
-  @x.class.should == klass
+Then ":ivar should be a :class" do |ivar, klass|
+  ivar.should be_kind_of(klass)
 end
 
-Then /^@x should evaluate to (.*)$/ do |expression|
-  @x.should == eval(expression)
+Pattern /a|an/
+Pattern /is|are/
+
+Pattern :class, /([A-Z]\w*(?:::[A-Z]\w*)*)/ do |class_name|
+  class_name.split(/::/).inject(Object) do |klass, subname|
+    klass.const_get(subname)
+  end
 end
 
-Pattern :class, /([A-Z][a-z]+)/ do |class_name|
-  Object.const_get(class_name)
+Pattern :ivar, /(@\w+)/ do |ivar_name|
+  instance_variable_get(ivar_name)
 end
 
-Pattern :integer, /(-?\d+)/ do |number|
-  number.to_i
-end
+Pattern :ivar_name, /(@\w+)/
 
-Pattern :list_of_integers, /(-?\d+(?: *(?:,|and) *-?\d+)*)/ do |list|
-  list.split(/ *(?:,|and) */).map{|number| number.to_i}
+Pattern :value, /(.*)/ do |expression|
+  eval(expression)
 end
-
-PatternGenerator do |key|
-  %w[a an].include?(key) and /a|an/
-end
-
-## This PatternGenerator would enable automatic singularize/pluralize of ALL words
-## so you don't have to resort to regexp construction for steps just do deal with
-## pluralization related nonsense.
-#
-# PatternGenerator do |key|
-#   Regexp.new([Regexp.escape(key.singularize), Regexp.escape(key.pluralize)].join('|'))
-# end
