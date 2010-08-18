@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{cuke-patterns}
-  s.version = "0.1.3"
+  s.version = "0.1.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brendan Baldwin"]
-  s.date = %q{2010-08-16}
+  s.date = %q{2010-08-18}
   s.description = %q{Makes cucumber step definitions more focused, understandable, searchable and awesomeable.}
   s.email = %q{brendan@usergenic.com}
   s.extra_rdoc_files = [
@@ -23,14 +23,17 @@ Gem::Specification.new do |s|
      "Rakefile",
      "VERSION",
      "cuke-patterns.gemspec",
-     "features/no_regressions_in_normal_cukes.feature",
-     "features/simple_cuke_patterns.feature",
-     "features/step_definitions/no_regression_steps.rb",
+     "features/apply_pattern.feature",
+     "features/apply_pattern_steps.rb",
+     "features/pattern_generator.feature",
+     "features/simple_patterns.feature",
+     "features/step_definitions/pattern_generator_steps.rb",
      "features/step_definitions/simple_pattern_steps.rb",
      "features/support/env.rb",
      "lib/cuke-patterns.rb",
      "lib/cuke-patterns/rb_dsl_ext.rb",
      "lib/cuke-patterns/rb_language_ext.rb",
+     "lib/cuke-patterns/rb_world_ext.rb",
      "lib/cuke-patterns/step_mother_ext.rb"
   ]
   s.homepage = %q{http://github.com/brendan/cuke-patterns}
