@@ -136,7 +136,7 @@ module CukePatterns
         pattern_counter += 1 unless pattern_capture_count == 0
         capture_counter += pattern_capture_count
 
-        matcher_regexp << "(?:#{regexp})"
+        matcher_regexp << regexp.to_s
 
       end
 
