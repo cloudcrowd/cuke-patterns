@@ -1,4 +1,16 @@
-When "I assign :ivar_name to :value" do |ivar, value|
+When "I assign :ivar_name to :array" do |ivar, value|
+  instance_variable_set(ivar, value)
+end
+
+When "I assign :ivar_name to :fixnum" do |ivar, value|
+  instance_variable_set(ivar, value)
+end
+
+When "I assign :ivar_name to :float" do |ivar, value|
+  instance_variable_set(ivar, value)
+end
+
+When "I assign :ivar_name to :hash" do |ivar, value|
   instance_variable_set(ivar, value)
 end
 
@@ -13,10 +25,26 @@ end
 Pattern /a|an/
 Pattern /is|are/
 
+Pattern :array, /(\[.*\])/ do |array|
+  eval(array)
+end
+
 Pattern :class, /([A-Z]\w*(?:::[A-Z]\w*)*)/ do |class_name|
   class_name.split(/::/).inject(Object) do |klass, subname|
     klass.const_get(subname)
   end
+end
+
+Pattern :fixnum, /(-?\d+)/ do |fixnum|
+  fixnum.to_i
+end
+
+Pattern :float, /(-?\d+\.\d+)/ do |float|
+  float.to_f
+end
+
+Pattern :hash, /(\{.*\})/ do |hash|
+  eval(hash)
 end
 
 Pattern :ivar, /(@\w+)/ do |ivar_name|

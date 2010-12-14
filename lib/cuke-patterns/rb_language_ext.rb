@@ -110,11 +110,12 @@ module CukePatterns
       regexp.to_s.gsub(/\\\\|\\\(|\(\?/,'').scan(/\(/).length
     end
 
+    # Given a Step Definition's string aka 'matcher' and its Proc, generate a Regexp and
+    # new Proc by replacing all the Patterns in the String matcher with their Regexps etc.
     def convert_cuke_patterns_and_proc(matcher, proc)
 
       matcher_regexp = "^"
 
-      pattern_counter = 0
       capture_counter = 0
 
       # Split the string by non-alphanumeric, underscore or leading-colon characters
@@ -131,9 +132,8 @@ module CukePatterns
 
         proc = convert_cuke_pattern_proc_arguments(
           proc, conversion_proc,
-          pattern_counter, pattern_capture_count) if conversion_proc
+          capture_counter, pattern_capture_count) if conversion_proc
 
-        pattern_counter += 1 unless pattern_capture_count == 0
         capture_counter += pattern_capture_count
 
         matcher_regexp << regexp.to_s
@@ -149,6 +149,9 @@ module CukePatterns
     # the arguments yielded to the original_block (arg_count) at the offset.
     def convert_cuke_pattern_proc_arguments(original_proc, conversion_proc, offset, arg_count)
 
+      # The number of arguments of the new Proc should be the number of arguments of the
+      # old Proc with the change that an argument in the old Proc will potentialy now be
+      # converted into a multiple-capture.
       arity = original_proc.arity + arg_count - 1
       arg_list = (1..arity).map{|n| "arg#{n}"}.join(",")
 
@@ -157,6 +160,7 @@ module CukePatterns
 
       new_proc = instance_eval(<<-ruby, file, line)
         Proc.new do |#{arg_list}|
+
           args = [#{arg_list}]
           arg_range = offset..(offset + arg_count - 1)
           converted_args = instance_exec(*args[arg_range], &conversion_proc)
