@@ -14,7 +14,7 @@ begin
     gem.summary = %Q{Makes cucumber step definitions more focused, understandable, searchable and awesomeable.}
     gem.description = %Q{Makes cucumber step definitions more focused, understandable, searchable and awesomeable.}
     gem.email = "brendan@usergenic.com"
-    gem.homepage = "http://github.com/brendan/cuke-patterns"
+    gem.homepage = "http://github.com/cloudcrowd/cuke-patterns"
     gem.authors = ["Brendan Baldwin"]
     # gem.add_development_dependency "thoughtbot-shoulda", ">= 0"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings

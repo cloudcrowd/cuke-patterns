@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{cuke-patterns}
-  s.version = "0.1.5"
+  s.version = "0.1.6"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brendan Baldwin"]
-  s.date = %q{2010-08-18}
+  s.date = %q{2010-12-14}
   s.description = %q{Makes cucumber step definitions more focused, understandable, searchable and awesomeable.}
   s.email = %q{brendan@usergenic.com}
   s.extra_rdoc_files = [
@@ -25,8 +25,10 @@ Gem::Specification.new do |s|
      "cuke-patterns.gemspec",
      "features/apply_pattern.feature",
      "features/apply_pattern_steps.rb",
+     "features/multi_capture_patterns.feature",
      "features/pattern_generator.feature",
      "features/simple_patterns.feature",
+     "features/step_definitions/multi_capture_steps.rb",
      "features/step_definitions/pattern_generator_steps.rb",
      "features/step_definitions/simple_pattern_steps.rb",
      "features/support/env.rb",
@@ -39,14 +41,14 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/brendan/cuke-patterns}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.6}
+  s.rubygems_version = %q{1.3.7}
   s.summary = %q{Makes cucumber step definitions more focused, understandable, searchable and awesomeable.}
 
   if s.respond_to? :specification_version then
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
     s.specification_version = 3
 
-    if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
+    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
     else
     end
   else
