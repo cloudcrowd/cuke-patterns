@@ -38,7 +38,7 @@ Gem::Specification.new do |s|
      "lib/cuke-patterns/rb_world_ext.rb",
      "lib/cuke-patterns/step_mother_ext.rb"
   ]
-  s.homepage = %q{http://github.com/brendan/cuke-patterns}
+  s.homepage = %q{http://github.com/cloudcrowd/cuke-patterns}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.7}
