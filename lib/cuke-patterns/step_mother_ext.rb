@@ -24,6 +24,8 @@ module CukePatterns
 
 end
 
-Cucumber::StepMother.class_eval do
-  include CukePatterns::StepMotherExt
+if Cucumber.const_defined?(:StepMother) and Cucumber::StepMother.instance_methods.find { |m| m.to_s == "load_code_files" }
+  Cucumber::StepMother.class_eval do
+    include CukePatterns::StepMotherExt
+  end
 end

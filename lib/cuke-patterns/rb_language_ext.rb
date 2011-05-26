@@ -7,9 +7,17 @@ module CukePatterns
       rb_language_class.class_eval do
         alias_method :register_rb_step_definition_without_cuke_patterns, :register_rb_step_definition
         alias_method :register_rb_step_definition, :register_rb_step_definition_with_cuke_patterns
+
+        alias_method :after_configuration_without_cuke_patterns, :after_configuration
+        alias_method :after_configuration, :after_configuration_with_cuke_patterns
       end
 
       super
+    end
+
+    def after_configuration_with_cuke_patterns(*args)
+      apply_cuke_patterns_to_delayed_step_definition_registrations!
+      after_configuration_without_cuke_patterns(*args)
     end
 
     def apply_cuke_patterns_to_delayed_step_definition_registrations!
